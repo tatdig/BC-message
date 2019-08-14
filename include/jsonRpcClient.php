@@ -1,16 +1,9 @@
 <?php
 
-/**
- * @dependency Zend/Json.php - http://framework.zend.com/
- *
- * This file is modifying JSON-RPC PHP which depends on `Zend/Json.php`.
- * The original file - http://jsonrpcphp.org/
- */
-
-require_once('Zend/Json.php');
+//namespace BitWasp\BitcoinLib;
 
 /*
-                    COPYRIGHT
+					COPYRIGHT
 
 Copyright 2007 Sergio Vaccaro <sergio@inservibile.org>
 
@@ -37,20 +30,33 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @author sergio <jsonrpcphp@inservibile.org>
  */
-class jsonRPCClient {
-    /** 
+
+/**
+ * This file has been modified to return an array containing details
+ * of an error instead of throwing an exception, to fit the BitWasp's
+ * purposes.
+ */
+
+/**
+ * jsonRPCclient library
+ */
+class Jsonrpcclient
+{
+
+    /**
      * Debug state
      *
      * @var boolean
      */
     private $debug;
-    /** 
+
+    /**
      * The server URL
      *
      * @var string
      */
     private $url;
-    /** 
+    /**
      * The request id
      *
      * @var integer
@@ -62,99 +68,98 @@ class jsonRPCClient {
      * @var boolean
      */
     private $notification = false;
+
     /**
      * Takes the connection parameters
      *
-     * @param string $url
-     * @param boolean $debug
+     * @param array ($url, $debug)
      */
-    public function __construct($url,$debug = false) {
+    public function __construct($params)
+    {
         // server URL
-        $this->url = $url;
+        $this->url = $params['url'];
         // proxy
-        empty($proxy) ? $this->proxy = '' : $this->proxy = $proxy;
+        empty($params['proxy']) ? $this->proxy = '' : $this->proxy = $params['proxy'];
         // debug state
-        empty($debug) ? $this->debug = false : $this->debug = true;
+        empty($params['debug']) ? $this->debug = false : $this->debug = true;
         // message id
-        $this->id = 1;
+        //	$this->id = 1;
     }
+
     /**
      * Sets the notification state of the object. In this state, notifications are performed, instead of requests.
      *
      * @param boolean $notification
      */
-    public function setRPCNotification($notification) {
+    public function setRPCNotification($notification)
+    {
         empty($notification) ?
-                            $this->notification = false
-                            :
-                            $this->notification = true;
+            $this->notification = false
+            :
+            $this->notification = true;
     }
+
     /**
      * Performs a jsonRCP request and gets the results as an array
      *
      * @param string $method
      * @param array $params
-     * @return array
+     * @return bool
+     * @throws \Exception
      */
-    public function __call($method,$params) {
-        // check
+    public function __call($method, $params)
+    {
+
+        // check the method/function
         if (!is_scalar($method)) {
-            throw new Exception('Method name has no scalar value');
+            throw new \InvalidArgumentException('Method name has no scalar value');
         }
-        // check
+
+        // check the params are entered as an array
         if (is_array($params)) {
             // no keys
             $params = array_values($params);
         } else {
-            throw new Exception('Params must be given as array');
+            throw new \InvalidArgumentException('Params must be given as array');
         }
+
         // sets notification or request task
-        if ($this->notification) {
-            $currentId = NULL;
-        } else {
-            $currentId = $this->id;
-        }
+        $currentId = ($this->notification) ? null : $this->id;
+
         // prepares the request
         $request = array(
-                        'method' => $method,
-                        'params' => $params,
-                        'id' => $currentId
-                        );
-        $request = Zend_Json::encode($request);
-        $this->debug && $this->debug.='***** Request *****'."\n".$request."\n".'***** End Of request *****'."\n\n";
+            'method' => $method,
+            'params' => $params,
+            'id' => $currentId
+        );
+        $request = json_encode($request);
+        $this->debug && $this->debug .= '***** Request *****' . "\n" . $request . "\n" . '***** End Of request *****' . "\n\n";
 
         // performs the HTTP POST
-        $opts = array ('http' => array (
-                            'method'  => 'POST',
-                            'header'  => 'Content-type: application/json',
-                            'content' => $request
-                            ));
-        $context  = stream_context_create($opts);
-        if ($fp = fopen($this->url, 'r', false, $context)) {
-            $response = '';
-            while($row = fgets($fp)) {
-                $response.= trim($row)."\n";
-            }
-            $this->debug && $this->debug.='***** Server response *****'."\n".$response.'***** End of server response *****'."\n";
-            $response = Zend_Json::decode($response,true);
-        } else {
-            throw new Exception('Unable to connect to '.$this->url);
-        }
-
+        $ch = curl_init($this->url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $request);
+        $response = json_decode(curl_exec($ch), true);
+        curl_close($ch);
         // debug output
         if ($this->debug) {
-            echo nl2br($debug);
+            echo nl2br($this->debug);
         }
 
         // final checks and return
         if (!$this->notification) {
             // check
             if ($response['id'] != $currentId) {
-                throw new Exception('Incorrect response id (request id: '.$currentId.', response id: '.$response['id'].')');
+                throw new \Exception('Incorrect response id (request id: ' . $currentId . ', response id: ' . $response['id'] . ')');
             }
             if (!is_null($response['error'])) {
-                throw new Exception('Request error: '.$response['error']);
+                //throw new Exception('Request error: '.$response['error']);
+                // return the error array.
+                return $response['error'];
             }
+
             return $response['result'];
         } else {
             return true;
