@@ -22,7 +22,7 @@ $inputtxt = file($path."text.txt");
 $index = 0;
 foreach($inputtxt as $line){
     $t = hexdump(trim($line));
-    if(strlen( $t ) > 80) die("Line is too long!");
+    if(strlen( $t ) > 80) die("Line is too long!"); //Length of hex string must not exceed 80 bytes!!!
     $hx[] = $t;
 //    echo "index:$index\tlength:".strlen($hx)."\t".$hx.PHP_EOL;
 //    $index++;
