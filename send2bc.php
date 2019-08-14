@@ -53,9 +53,31 @@ foreach($hx as $ln){
 //var_dump($input); var_dump($output);
     $newtxid = $tdcoin->createrawtransaction( $input, $output );
     if(is_array($newtxid) && array_key_exists('code',$newtxid)){
-<------>die( "Error: ".$newtxid['message'].PHP_EOL );
+        die( "Error: ".$newtxid['message'].PHP_EOL );
     }else{
-<------>file_put_contents($usedUTXOs,$goodtx[$ind]['txid'].PHP_EOL, FILE_APPEND | LOCK_EX );
-<------>file_put_contents($newTXs,$newtxid.PHP_EOL, FILE_APPEND | LOCK_EX);
+        file_put_contents($usedUTXOs,$goodtx[$ind]['txid'].PHP_EOL, FILE_APPEND | LOCK_EX );
+        file_put_contents($newTXs,$newtxid.PHP_EOL, FILE_APPEND | LOCK_EX);
     }
     var_dump($newtxid);
+    sleep(1); $ind++;
+}
+
+$trans = file($newTXs);
+if(count($trans)>0){
+    foreach($trans as $tran){
+        $sgnTrans = $tdcoin->signrawtransactionwithwallet( trim($tran) );
+        if(is_array($sgnTrans) && array_key_exists('code',$sgnTrans)) { var_dump($sgnTrans); die("Error: ".$sgnTrans['message'].PHP_EOL); }
+        if($sgnTrans['complete'] != 'true') die("Error: Transaction signature failed".PHP_EOL);
+        file_put_contents($newSTXs,$sgnTrans['hex'].PHP_EOL, FILE_APPEND | LOCK_EX);
+    }
+}
+
+$sends = file($newSTXs);
+if(count($sends)<1) die("Error: Nothing to send".PHP_EOL);
+foreach($sends as $send){
+    $sendTrans = $tdcoin->sendrawtransaction( trim($send) );
+    var_dump($sendTrans);
+    file_put_contents($sentTXs,$sendTrans.PHP_EOL, FILE_APPEND | LOCK_EX );
+    sleep(1);
+}
+//var_dump($goodtx);
