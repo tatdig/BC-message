@@ -1,8 +1,12 @@
 # BC-shot-message
 Example of saving short messages to blockchain TDCoin.
 
-Make sure to run as same user as TDCoinCore for example:
-  runuser -l tdcoincore -c "php /home/t2bc/text2bc/send2bc.php"
+Before using this script, make few payments with sufficient amount to your wallet address!
+For example 100 payments with 1TDC each. After at least 2 blocks (please refer to source code) in
+TDCoin blockchain you can use it to send messages.
+
+Make sure to run script as same user as TDCoinCore for example:
+  runuser -l someuser -c "php /home/someuser/BC-short-message/send2bc.php"
 
 To view transaction use TDCoin blockchain explorer:
 
