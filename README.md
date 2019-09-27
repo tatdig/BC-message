@@ -2,7 +2,7 @@
 Example of saving short messages to blockchain TDCoin.
 
 Before using this script, make few payments with sufficient amount to your wallet address!
-For example 100 payments with 1TDC each. After at least 2 blocks (please refer to source code) in
+For example 100 payments with 1TDC each. After at least 2 new blocks (please refer to source code) in
 TDCoin blockchain you can use it to send messages.
 
 Make sure to run script as same user as TDCoinCore for example:
