@@ -2,7 +2,7 @@
 require_once 'include/jsonRpcClient.php';
 require_once 'include/utils.php';
 
-$netfee = 0.001;
+$netfee = 0.0001;
 $path = "/home/t2bc/text2bc/"; 
 $usedUTXOs = $path.'usedUTXOs.txt'; //UTXO used
 $newTXs = $path.'newTXs.txt'; //NEW TX
