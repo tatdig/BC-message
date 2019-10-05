@@ -1,7 +1,7 @@
 # BC-shot-message
 Example of saving short messages to blockchain TDCoin.
 
-Install or compile TDCoinCore form https://github.com/tatdig/TDCoinCore.
+Install or compile TDCoinCore from https://github.com/tatdig/TDCoinCore.
 
 Start TDCoinCore.  Create reciving address.
 
