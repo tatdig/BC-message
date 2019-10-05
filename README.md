@@ -1,11 +1,13 @@
 # BC-shot-message
 Example of saving short messages to blockchain TDCoin.
 
+Install or compile TDCoinCore form https://github.com/tatdig/TDCoinCore.
+
+Start TDCoinCore.  Create reciving address.
+
 Before using this script, make few payments with sufficient amount to your wallet address!
 For example 100 payments with 1TDC each. After at least 2 new blocks (please refer to source code) in
 TDCoin blockchain, you can use it to send messages.
-
-Also you need TDCoinCore running on the computer.
 
 Make sure to run script as same user as TDCoinCore for example:
   runuser -l someuser -c "php /home/someuser/BC-short-message/send2bc.php"
