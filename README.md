@@ -3,7 +3,7 @@ Example of saving short messages to blockchain TDCoin.
 
 Install or compile TDCoinCore from https://github.com/tatdig/TDCoinCore.
 
-Start TDCoinCore.  Create reciving address.
+Start TDCoinCore.  Create receiving address.
 
 Before using this script, make few payments with sufficient amount to your wallet address!
 For example 100 payments with 1TDC each. After at least 2 new blocks (please refer to source code) in
