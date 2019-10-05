@@ -5,6 +5,8 @@ Before using this script, make few payments with sufficient amount to your walle
 For example 100 payments with 1TDC each. After at least 2 new blocks (please refer to source code) in
 TDCoin blockchain, you can use it to send messages.
 
+Also you need TDCoinCore running on the computer.
+
 Make sure to run script as same user as TDCoinCore for example:
   runuser -l someuser -c "php /home/someuser/BC-short-message/send2bc.php"
 
