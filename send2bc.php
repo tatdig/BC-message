@@ -6,7 +6,12 @@ require_once 'include/colored.php';
 $colors = new Colors();
 $netfee = 0.0001; //TDC
 $datasize = 1020; //bytes
-$waddr = "Your local wallet address here"
+$waddr = ""; //Your local wallet address here or supply as an argument
+
+if(empty($waddr) && empty($argv[1])){
+    die( $colors->getColoredString("\tError. Wallet address is empty!",'red',null).PHP_EOL );
+    exit;
+}
 
 $usedUTXOs = '/home/tdcoincore/text2bc/usedUTXOs.txt'; //UTXO used
 $newRawTXs = '/home/tdcoincore/text2bc/newRawTXs.txt'; //NEW TX
