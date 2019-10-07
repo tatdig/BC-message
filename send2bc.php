@@ -58,7 +58,7 @@ while($changed){
 
 $hx = $hx_;
 
-$un = $tdcoin->listunspent(2,999,array($waddr));
+$un = $tdcoin->listunspent(2,999999,array($waddr));
 var_dump($un);
 foreach($un as $untxo){
     echo "txid: ".$untxo['txid'].PHP_EOL;
