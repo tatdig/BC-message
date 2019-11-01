@@ -1,5 +1,8 @@
 # BC-shot-message
-Example of saving short messages to blockchain TDCoin.
+
+This may help to "copywrite" matters, by putting extra layer of security.
+
+Example of saving messages to blockchain TDCoin.
 
 Install or compile TDCoinCore from https://github.com/tatdig/TDCoinCore.
 
