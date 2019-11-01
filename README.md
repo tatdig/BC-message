@@ -1,6 +1,6 @@
 # BC-message
 
-This may help to "copywrite" matters, by putting extra layer of security.
+This may help to "copyright" matters, by putting extra layer of security.
 
 Example of saving messages to blockchain TDCoin.
 
