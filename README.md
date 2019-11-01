@@ -1,4 +1,4 @@
-# BC-shot-message
+# BC-message
 
 This may help to "copywrite" matters, by putting extra layer of security.
 
